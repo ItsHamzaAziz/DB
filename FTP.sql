@@ -3514,7 +3514,7 @@ COMMIT TRAN
 ROLLBACK TRAN
 -- 2. Transaction on inserting a new country
 BEGIN TRANSACTION
-INSERT INTO City
+INSERT INTO Country
 VALUES('Bangladesh')
 COMMIT TRAN
 ROLLBACK TRAN
@@ -3534,6 +3534,72 @@ ROLLBACK TRAN
 BEGIN TRANSACTION
 INSERT INTO Airport
 VALUES('Lahore Airport', 18)
+COMMIT TRAN
+ROLLBACK TRAN
+-- 6. Transaction on inserting a new baggage
+BEGIN TRANSACTION
+INSERT INTO Baggage
+VALUES('Computers', 5, 3)
+COMMIT TRAN
+ROLLBACK TRAN
+-- 7. Transaction on inserting a new crew
+BEGIN TRANSACTION
+INSERT INTO Crew
+VALUES('Saleem Khan', 1, 200000, 'saleem.khan@gmail.com', '684 Main Town Lahore', 'M')
+COMMIT TRAN
+ROLLBACK TRAN
+-- 8. Transaction on inserting a CrewOnFlight
+BEGIN TRANSACTION
+INSERT INTO CrewOnFlight
+VALUES(6, 1)
+COMMIT TRAN
+ROLLBACK TRAN
+-- 9. Transaction on inserting a CrewRole
+BEGIN TRANSACTION
+INSERT INTO CrewRole
+VALUES('Cleaner')
+COMMIT TRAN
+ROLLBACK TRAN
+-- 10. Transaction on inserting a Feedback
+BEGIN TRANSACTION
+INSERT INTO Feedback
+VALUES('Good Airline', 7, 2, 9, 1)
+COMMIT TRAN
+ROLLBACK TRAN
+-- 11. Transaction on inserting a Flight
+BEGIN TRANSACTION
+INSERT INTO Feedback
+VALUES(2, '2022-9-12 9:15:00', 15, '2022-9-12 15:20:00', 10)
+COMMIT TRAN
+ROLLBACK TRAN
+-- 12. Transaction on inserting a Passenger
+BEGIN TRANSACTION
+INSERT INTO Passenger
+VALUES('Adeel Sarfaraz', 'adeel.sarfaraz@gmail.com', 'M')
+COMMIT TRAN
+ROLLBACK TRAN
+-- 13. Transaction on inserting a Payment
+BEGIN TRANSACTION
+INSERT INTO Passenger
+VALUES(70, 90000, 'Online')
+COMMIT TRAN
+ROLLBACK TRAN
+-- 14. Transaction on inserting a Reservation
+BEGIN TRANSACTION
+INSERT INTO Reservation
+VALUES(70, 7, 1, 18, '2022-9-10 6:00:00')
+COMMIT TRAN
+ROLLBACK TRAN
+-- 15. Transaction on inserting a Response
+BEGIN TRANSACTION
+INSERT INTO Passenger
+VALUES('Action underway')
+COMMIT TRAN
+ROLLBACK TRAN
+-- 16. Transaction on inserting a Seat
+BEGIN TRANSACTION
+INSERT INTO Passenger
+VALUES('AB45', 3, 7)
 COMMIT TRAN
 ROLLBACK TRAN
 
