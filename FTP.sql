@@ -479,7 +479,6 @@ WHERE class = 1 AND aircraft = 1
 -- 40. Seats of aircraft id 2 in class id 1
 SELECT * FROM Seat
 WHERE class = 1 AND aircraft = 2
-
 -- 41. Cities with country id 2 or 3
 SELECT * FROM City
 WHERE country = 2 OR country = 3
@@ -941,6 +940,84 @@ WHERE crew_salary > (SELECT crew_salary FROM Crew WHERE crew_name = 'Zara Khan')
 -- 4. Where salary is less than lowest salary of role id 4
 SELECT crew_name, crew_salary FROM Crew
 WHERE crew_salary < (SELECT MIN(crew_salary) FROM crew WHERE crew_role = 4)
+-- 5. Names of cities from Pakistan
+SELECT city_name FROM City
+WHERE country = (SELECT country_id FROM Country WHERE country_name = 'Pakistan')
+-- 6. Where aircraft is Boeing 747
+SELECT flight_id FROM Flight
+WHERE aircraft = (SELECT aircraft_id FROM Aircraft WHERE aircraft_name = 'Boeing 747')
+-- 7. Where crew role is Pilot
+SELECT crew_id, crew_name FROM Crew
+WHERE crew_role = (SELECT crew_id FROM CrewRole WHERE role_name = 'Pilot')
+-- 8. Where country is India
+SELECT city_name FROM City
+WHERE country = (SELECT country_id FROM Country WHERE country_name = 'India')
+-- 9. Where country is United States
+SELECT city_name FROM City
+WHERE country = (SELECT country_id FROM Country WHERE country_name = 'United States')
+-- 10. Where country is Japan
+SELECT city_name FROM City
+WHERE country = (SELECT country_id FROM Country WHERE country_name = 'Japan')
+-- 11. Where aircraft is Boeing 747
+SELECT flight_id FROM Flight
+WHERE aircraft = (SELECT aircraft_id FROM Aircraft WHERE aircraft_name = 'Airbus A320')
+-- 12. Where aircraft is Boeing 747
+SELECT flight_id FROM Flight
+WHERE aircraft = (SELECT aircraft_id FROM Aircraft WHERE aircraft_name = 'Boeing 787')
+-- 13. Where aircraft is Boeing 747
+SELECT flight_id FROM Flight
+WHERE aircraft = (SELECT aircraft_id FROM Aircraft WHERE aircraft_name = 'Airbus A380')
+-- 14. Where crew salary is less than average salary
+SELECT crew_name, crew_salary FROM Crew
+WHERE crew_salary < (SELECT AVG(crew_salary) FROM crew)
+-- 15. Who have more salary than Ali Khan
+SELECT * FROM Crew
+WHERE crew_salary > (SELECT crew_salary FROM Crew WHERE crew_name = 'Ali Khan')
+-- 16. Who have less salary than Ali Khan
+SELECT * FROM Crew
+WHERE crew_salary < (SELECT crew_salary FROM Crew WHERE crew_name = 'Ali Khan')
+-- 17. Where class is Business
+SELECT reservation_id FROM Reservation
+WHERE class = (SELECT class_id FROM Class WHERE class_name = 'Business')
+-- 18. Where class is Economy
+SELECT reservation_id FROM Reservation
+WHERE class = (SELECT class_id FROM Class WHERE class_name = 'Economy')
+-- 19. Where class is Business
+SELECT reservation_id FROM Reservation
+WHERE class = (SELECT class_id FROM Class WHERE class_name = 'First')
+-- 20. Where flight departure airport is 18
+SELECT crew FROM CrewOnFlight
+WHERE flight IN (SELECT flight_id FROM Flight WHERE flight_departure_airport = 18)
+-- 21. Where flight departure airport is 13
+SELECT crew FROM CrewOnFlight
+WHERE flight IN (SELECT flight_id FROM Flight WHERE flight_departure_airport = 13)
+-- 22. Where flight departure airport is 5
+SELECT crew FROM CrewOnFlight
+WHERE flight IN (SELECT flight_id FROM Flight WHERE flight_departure_airport = 5)
+-- 23. Where flight arrival airport is 19
+SELECT crew FROM CrewOnFlight
+WHERE flight IN (SELECT flight_id FROM Flight WHERE flight_arrival_airport = 19)
+-- 24. Where flight arrival airport is 17
+SELECT crew FROM CrewOnFlight
+WHERE flight IN (SELECT flight_id FROM Flight WHERE flight_arrival_airport = 17)
+-- 25. Where flight arrival airport is 20
+SELECT crew FROM CrewOnFlight
+WHERE flight IN (SELECT flight_id FROM Flight WHERE flight_arrival_airport = 20)
+-- 26. Where city name is Lahore
+SELECT airport_id, airport_name FROM Airport
+WHERE city = (SELECT city_id FROM City WHERE city_name = 'Lahore')
+-- 27. Where city name is Karachi
+SELECT airport_id, airport_name FROM Airport
+WHERE city = (SELECT city_id FROM City WHERE city_name = 'Karachi')
+-- 28. Where city name is Islamabad
+SELECT airport_id, airport_name FROM Airport
+WHERE city = (SELECT city_id FROM City WHERE city_name = 'Islamabad')
+-- 29. Where city name is London
+SELECT airport_id, airport_name FROM Airport
+WHERE city = (SELECT city_id FROM City WHERE city_name = 'London')
+-- 30. Where flight departure airport is 18
+SELECT baggage_id, baggage_detail FROM Baggage
+WHERE flight IN (SELECT flight_id FROM Flight WHERE flight_departure_airport = 18)
 
 
 -----------------------------Aggregate Functions--------------------------------------
@@ -3775,34 +3852,3 @@ END TRY
 BEGIN CATCH
 	SELECT ERROR_MESSAGE() AS ErrMessage
 END CATCH
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
