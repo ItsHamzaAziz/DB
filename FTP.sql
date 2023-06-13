@@ -3602,7 +3602,30 @@ INSERT INTO Passenger
 VALUES('AB45', 3, 7)
 COMMIT TRAN
 ROLLBACK TRAN
-
+-- 17. Transaction on updating aircraft name
+BEGIN TRANSACTION
+UPDATE Aircraft SET aircraft_name = 'Airbus T56'
+WHERE aircraft_id = 6
+COMMIT TRAN
+ROLLBACK TRAN
+-- 18. Transaction on updating city name
+BEGIN TRANSACTION
+UPDATE City SET city_name = 'NY'
+WHERE city_id = 6
+COMMIT TRAN
+ROLLBACK TRAN
+-- 19. Transaction on updating country name
+BEGIN TRANSACTION
+UPDATE Country SET country_name = 'USA'
+WHERE country_id = 1
+COMMIT TRAN
+ROLLBACK TRAN
+-- 20. Transaction on deleting country name
+BEGIN TRANSACTION
+DELETE FROM Country
+WHERE country_id = 11
+COMMIT TRAN
+ROLLBACK TRAN
 
 
 --------------------------Exception handling - Try Catch---------------------------
@@ -3620,14 +3643,155 @@ END TRY
 BEGIN CATCH
 	SELECT ERROR_MESSAGE() AS ErrMessage
 END CATCH
--- 3.
+-- 3. Trying to divide salary by zero
 BEGIN TRY
-	UPDATE City SET city_id = 1
-	WHERE city_name = 'London'
+	SELECT crew_salary / 0 AS custom_column FROM Crew
 END TRY
 BEGIN CATCH
-	SELECT ERROR_MESSAGE()
+	SELECT ERROR_MESSAGE() AS ErrMessage
 END CATCH
+-- 4. Trying to set country id 25 (which is not present in country table)
+BEGIN TRY
+	UPDATE City SET country = 25
+	WHERE city_id = 5
+END TRY
+BEGIN CATCH
+	SELECT ERROR_MESSAGE() AS ErrMessage
+END CATCH
+-- 5. Trying to update a table which does not exist
+BEGIN TRY
+	UPDATE MyTable SET country = 25
+	WHERE city_id = 5
+END TRY
+BEGIN CATCH
+	SELECT ERROR_MESSAGE() AS ErrMessage
+END CATCH
+-- 6. Trying to set aircraft id 25 (which is not present in aircraft table)
+BEGIN TRAN
+BEGIN TRY
+	UPDATE Flight SET aircraft = 25
+	WHERE flight_id = 5
+END TRY
+BEGIN CATCH
+	SELECT ERROR_MESSAGE() AS ErrMessage
+END CATCH
+-- 7. Trying to set response id 50 (which is not present in response table)
+BEGIN TRAN
+BEGIN TRY
+	UPDATE Feedback SET response = 50
+	WHERE feedback_id = 2
+END TRY
+BEGIN CATCH
+	SELECT ERROR_MESSAGE() AS ErrMessage
+END CATCH
+-- 8. Trying to cast country name as int
+BEGIN TRY
+	SELECT CAST(country_name AS INT) FROM Country
+END TRY
+BEGIN CATCH
+	SELECT ERROR_MESSAGE() AS ErrMessage
+END CATCH
+-- 9. Trying to cast complete feedback as datetime
+BEGIN TRY
+	SELECT CAST(complete_feedback AS DATETIME) FROM Feedback
+END TRY
+BEGIN CATCH
+	SELECT ERROR_MESSAGE() AS ErrMessage
+END CATCH
+-- 10. Trying to cast complete feedback as decimal
+BEGIN TRY
+	SELECT CAST(complete_feedback AS DECIMAL(20, 7)) FROM Feedback
+END TRY
+BEGIN CATCH
+	SELECT ERROR_MESSAGE() AS ErrMessage
+END CATCH
+-- 11. Trying to cast complete feedback as int
+BEGIN TRY
+	SELECT CAST(complete_feedback AS INT) FROM Feedback
+END TRY
+BEGIN CATCH
+	SELECT ERROR_MESSAGE() AS ErrMessage
+END CATCH
+-- 12. Trying to cast complete feedback as bit
+BEGIN TRY
+	SELECT CAST(complete_feedback AS BIT) FROM Feedback
+END TRY
+BEGIN CATCH
+	SELECT ERROR_MESSAGE() AS ErrMessage
+END CATCH
+-- 13. Trying to cast complete feedback as time
+BEGIN TRY
+	SELECT CAST(complete_feedback AS TIME) FROM Feedback
+END TRY
+BEGIN CATCH
+	SELECT ERROR_MESSAGE() AS ErrMessage
+END CATCH
+-- 14. Trying to cast complete feedback as small date time
+BEGIN TRY
+	SELECT CAST(complete_feedback AS SMALLDATETIME) FROM Feedback
+END TRY
+BEGIN CATCH
+	SELECT ERROR_MESSAGE() AS ErrMessage
+END CATCH
+-- 15. Trying to divide sum of country ids by zero
+BEGIN TRY
+	SELECT SUM(country_id) / 0 FROM Country
+END TRY
+BEGIN CATCH
+	SELECT ERROR_MESSAGE() AS ErrMessage
+END CATCH
+-- 16. Trying to divide average of city ids by zero
+BEGIN TRY
+	SELECT AVG(city_id) / 0 FROM City
+END TRY
+BEGIN CATCH
+	SELECT ERROR_MESSAGE() AS ErrMessage
+END CATCH
+-- 17. Trying to divide minimum of city ids by zero
+BEGIN TRY
+	SELECT MIN(city_id) / 0 FROM City
+END TRY
+BEGIN CATCH
+	SELECT ERROR_MESSAGE() AS ErrMessage
+END CATCH
+-- 18. Trying to divide maximum of city ids by zero
+BEGIN TRY
+	SELECT MAX(city_id) / 0 FROM City
+END TRY
+BEGIN CATCH
+	SELECT ERROR_MESSAGE() AS ErrMessage
+END CATCH
+-- 19. Trying to cast seat name as int
+BEGIN TRY
+	SELECT CAST(seat_name AS INT) FROM Seat
+END TRY
+BEGIN CATCH
+	SELECT ERROR_MESSAGE() AS ErrMessage
+END CATCH
+-- 20. Trying to cast crew gender as int
+BEGIN TRY
+	SELECT CAST(crew_gender AS INT) FROM Crew
+END TRY
+BEGIN CATCH
+	SELECT ERROR_MESSAGE() AS ErrMessage
+END CATCH
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
