@@ -3268,6 +3268,208 @@ DELETE FROM Class
 WHERE class_id = 4
 
 
+------------------------------VIEW Statement---------------------------------------
+-- 1. View for specific column(s) of aiport table
+GO
+CREATE VIEW view_airport AS
+SELECT airport_name FROM Airport
+-- 2. View for specific column(s) of city table
+GO
+CREATE VIEW view_cities AS
+SELECT city_name FROM City
+-- 3. View for specific column(s) of country table
+GO
+CREATE VIEW view_countries AS
+SELECT country_name FROM Country
+-- 4. View for specific column(s) of aircraft table
+GO
+CREATE VIEW view_aircrafts AS
+SELECT aircraft_name FROM Aircraft
+-- 5. View for specific column(s) of baggage table
+GO
+CREATE VIEW view_baggages AS
+SELECT baggage_detail FROM Baggage
+-- 6. View for specific column(s) of crew table
+GO
+CREATE VIEW view_crew AS
+SELECT crew_name, crew_email FROM Crew
+-- 7. View for specific column(s) of CrewRole table
+GO
+CREATE VIEW view_crew_roles AS
+SELECT role_name FROM CrewRole
+-- 8. View for specific column(s) of feedback table
+GO
+CREATE VIEW view_feedbacks AS
+SELECT complete_feedback, rating FROM Feedback
+-- 9. View for specific column(s) of passenger table
+GO
+CREATE VIEW view_passengers AS
+SELECT passenger_id, passenger_email FROM Passenger
+-- 10. View for specific column(s) of Seat table
+GO
+CREATE VIEW view_seats AS
+SELECT seat_name, class FROM Seat
+
+
+-----------------------VIEW Statement using logical Operators----------------------
+-- 1. View for all aiports except those having aiport id 2 and 10
+GO
+CREATE VIEW view_specific_aiports_itt AS
+SELECT airport_id, airport_name FROM Airport
+WHERE airport_id NOT IN (2,10)
+-- 2. View for all aiports except those having aiport id 5 and 6
+GO
+CREATE VIEW view_specific_aiports_ifs AS
+SELECT airport_id, airport_name FROM Airport
+WHERE airport_id NOT IN (5,6)
+-- 3. View for all aiports except those having aiport id 9 and 10
+GO
+CREATE VIEW view_specific_aiports_int AS
+SELECT airport_id, airport_name FROM Airport
+WHERE airport_id NOT IN (9,10)
+-- 4. View for all aiports except those having aiport id between 10 and 20
+GO
+CREATE VIEW view_specific_aiports_btt AS
+SELECT airport_id, airport_name FROM Airport
+WHERE airport_id NOT BETWEEN 10 AND 20
+-- 5. View for all aiports except those having aiport id between 5 and 15
+GO
+CREATE VIEW view_specific_aiports_bff AS
+SELECT airport_id, airport_name FROM Airport
+WHERE airport_id NOT BETWEEN 5 AND 15
+-- 6. View for all aiports except those having aiport id between 20 and 30
+GO
+CREATE VIEW view_specific_aiports_nbtt AS
+SELECT airport_id, airport_name FROM Airport
+WHERE airport_id NOT BETWEEN 20 AND 30
+-- 7. View for all cities having country id 1 or 3
+GO
+CREATE VIEW view_specific_city_ot AS
+SELECT city_id, city_name FROM City
+WHERE country = 1 OR country = 3
+-- 8. View for all cities having country id 4 or 5
+GO
+CREATE VIEW view_specific_city_ff AS
+SELECT city_id, city_name FROM City
+WHERE country = 4 OR country = 5
+-- 9. View for all cities having country id 7 or 9
+GO
+CREATE VIEW view_specific_city_sn AS
+SELECT city_id, city_name FROM City
+WHERE country = 7 OR country = 9
+-- 10. View for all cities having country id 4 or 6
+GO
+CREATE VIEW view_specific_city_fs AS
+SELECT city_id, city_name FROM City
+WHERE country = 4 OR country = 6
+-- 11. View for crew which is male and has gmail email
+GO
+CREATE VIEW view_specific_crew_mg AS
+SELECT crew_id, crew_name, crew_email FROM Crew
+WHERE crew_gender = 'M' AND crew_email LIKE '%gmail.com'
+-- 12. View for crew which is male and has yahoo email
+GO
+CREATE VIEW view_specific_crew_my AS
+SELECT crew_id, crew_name, crew_email FROM Crew
+WHERE crew_gender = 'M' AND crew_email LIKE '%yahoo.com'
+-- 13. View for crew which is female and has gmail email
+GO
+CREATE VIEW view_specific_crew_fg AS
+SELECT crew_id, crew_name, crew_email FROM Crew
+WHERE crew_gender = 'F' AND crew_email LIKE '%gmail.com'
+-- 14. View for crew which is female and has gmail email
+GO
+CREATE VIEW view_specific_crew_fy AS
+SELECT crew_id, crew_name, crew_email FROM Crew
+WHERE crew_gender = 'F' AND crew_email LIKE '%yahoo.com'
+-- 15. View for crew which has other gender and has gmail email
+GO
+CREATE VIEW view_specific_crew_og AS
+SELECT crew_id, crew_name, crew_email FROM Crew
+WHERE crew_gender = 'O' AND crew_email LIKE '%gmail.com'
+-- 16. View for crew which has other gender and has yahoo email
+GO
+CREATE VIEW view_specific_crew_oy AS
+SELECT crew_id, crew_name, crew_email FROM Crew
+WHERE crew_gender = 'O' AND crew_email LIKE '%yahoo.com'
+-- 17. View for crew whose gender is male or other
+GO
+CREATE VIEW view_specific_crew_om AS
+SELECT crew_id, crew_name, crew_email FROM Crew
+WHERE crew_gender = 'O' AND crew_gender = 'M'
+-- 18. View for crew whose gender is female or other
+GO
+CREATE VIEW view_specific_crew_of AS
+SELECT crew_id, crew_name, crew_email FROM Crew
+WHERE crew_gender = 'O' AND crew_gender = 'F'
+-- 19. View for crew whose gender is male or female
+GO
+CREATE VIEW view_specific_crew_fm AS
+SELECT crew_id, crew_name, crew_email FROM Crew
+WHERE crew_gender = 'F' AND crew_gender = 'M'
+-- 20. View for crew role where role name is Pilot or Air Host
+GO
+CREATE VIEW view_specific_crew_role_pahm AS
+SELECT role_id, role_name FROM CrewRole
+WHERE role_name = 'Pilot' OR role_name = 'Air Host'
+-- 21. View for crew role where role name is Air Hostess or Air Host
+GO
+CREATE VIEW view_specific_crew_role_ahmahf AS
+SELECT role_id, role_name FROM CrewRole
+WHERE role_name = 'Air Hostess' OR role_name = 'Air Host'
+-- 22. View for crew which is pilot or air hostess
+GO
+CREATE VIEW view_crew_wrt_role_pahm AS
+SELECT c.crew_name, c.crew_email, c.crew_salary, cr.role_name FROM Crew c
+INNER JOIN CrewRole cr
+ON cr.role_id = c.crew_role
+WHERE cr.role_name = 'Pilot' OR role_name = 'Air Hostess'
+-- 23. View for crew which is pilot or load master
+GO
+CREATE VIEW view_crew_wrt_role_plm AS
+SELECT c.crew_name, c.crew_email, c.crew_salary, cr.role_name FROM Crew c
+INNER JOIN CrewRole cr
+ON cr.role_id = c.crew_role
+WHERE cr.role_name = 'Pilot' OR role_name = 'Load Master'
+-- 24. View for seats of aircraft id 1 and 3
+GO
+CREATE VIEW view_seat_ot AS
+SELECT seat_name, class, aircraft FROM Seat
+WHERE aircraft = 1 OR aircraft = 3
+-- 25. View for seats of aircraft id 4 and 2
+GO
+CREATE VIEW view_seat_ft AS
+SELECT seat_name, class, aircraft FROM Seat
+WHERE aircraft = 4 OR aircraft = 2
+-- 26. View for seats not in class 1 and 3
+GO
+CREATE VIEW view_seat_not AS
+SELECT seat_name, class, aircraft FROM Seat
+WHERE class NOT IN (1,3)
+-- 27. View for seats not in class 2 and 3
+GO
+CREATE VIEW view_seat_ntt AS
+SELECT seat_name, class, aircraft FROM Seat
+WHERE class NOT IN (2,3)
+-- 28. View for reservations except of those passengers having ids between 20 and 30
+GO
+CREATE VIEW view_res_ntt AS
+SELECT reservation_id, passenger, flight FROM Reservation
+WHERE passenger NOT BETWEEN 20 AND 30
+-- 29. View for reservations except of those passengers having ids between 10 and 18
+GO
+CREATE VIEW view_res_nte AS
+SELECT reservation_id, passenger, flight FROM Reservation
+WHERE passenger NOT BETWEEN 10 AND 18
+-- 30. View for specific reservation and flight details where flight id is not 1 and 4
+GO
+CREATE VIEW view_res_flight_nof AS
+SELECT r.reservation_id, r.passenger, f.flight_departure_airport, f.flight_arrival_airport FROM Reservation r
+INNER JOIN Flight f
+ON f.flight_id = r.flight
+WHERE flight NOT IN (1,4)
+
+
 --------Single Row Functions UPPER, LOWER, INITCAP, CONCAT, LENGTH, SUBSTR --------
 --------------------------using logical operators----------------------------------
 -- 1. Passenger name in upper case where passenger id from 5 to 20
