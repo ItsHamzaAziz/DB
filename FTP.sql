@@ -44,7 +44,7 @@ CREATE TABLE Airport(
 
 -- 6. Create Table Flight
 CREATE TABLE Flight(
-	-- 1. Auto Increment class_id
+	-- 1. Auto Increment flight_id
 	flight_id INT PRIMARY KEY IDENTITY(1,1),
 	-- 3. Foreign Key aircraft
 	aircraft INT FOREIGN KEY REFERENCES Aircraft(aircraft_id),
@@ -153,7 +153,7 @@ ALTER TABLE Aircraft ADD manufacturing_year INT DEFAULT NULL
 -- 2. ADD COLUMN area to Aiport Table
 ALTER TABLE Airport ADD area INT DEFAULT NULL
 -- 3. ADD COLUMN checked_by in Baggage Table
-ALTER TABLE Baggage ADD checked_status BOOLEAN
+ALTER TABLE Baggage ADD checked_status varchar(1)
 -- 4. ADD COLUMN city_code
 ALTER TABLE City ADD city_code varchar(3) DEFAULT NULL
 -- 5. ADD COLUMN class_code to Class Table
@@ -170,10 +170,10 @@ ALTER TABLE Response ADD response_code varchar(1) DEFAULT NULL
 ALTER TABLE Seat ADD comfort_level varchar(10) DEFAULT NULL
 
 -- 1. MODIFY data type of manufacturing_year
-ALTER TABLE Aircraft ALTER COLUMN manufacturing_year DATE
+ALTER TABLE Aircraft ALTER COLUMN manufacturing_year INT
 -- 2. MODIFY data type of area
 ALTER TABLE Airport ALTER COLUMN area varchar(10)
--- 3. MODIFY data type of area
+-- 3. MODIFY data type of checked_by
 ALTER TABLE Baggage ALTER COLUMN checked_by BIGINT
 -- 4. MODIFY data type of city_code
 ALTER TABLE City ALTER COLUMN city_code INT
@@ -235,7 +235,7 @@ EXEC sp_rename 'dbo.Feedback.response','response_id','COLUMN'
 ALTER TABLE Aircraft DROP COLUMN manufacturing_year
 -- 2. DROPPING COLUMN area
 ALTER TABLE Airport DROP COLUMN area
--- 3. DROPPING COLUMN checked_by
+-- 3. DROPPING COLUMN checked_status
 ALTER TABLE Baggage DROP COLUMN checked_status
 -- 4. DROPPING COLUMN city_code
 ALTER TABLE City DROP COLUMN city_code
@@ -455,13 +455,13 @@ WHERE crew_address LIKE '%Islamabad%' AND crew_role = 1
 -- 32. Crew from Karachi whose role id is 1
 SELECT * FROM Crew
 WHERE crew_address LIKE '%Karachi%' AND crew_role = 1
--- 33. Class id 2 resservations after 1st August 2022
+-- 33. Class id 2 reservations after 1st August 2022
 SELECT * FROM Reservation
 WHERE reservation_datetime > '2022-8-1' AND class = 2
--- 34. Class id 1 resservations after 1st August 2022
+-- 34. Class id 1 reservations after 1st August 2022
 SELECT * FROM Reservation
 WHERE reservation_datetime > '2022-8-1' AND class = 1
--- 35. Class id 3 resservations after 1st March 2022
+-- 35. Class id 3 reservations after 1st March 2022
 SELECT * FROM Reservation
 WHERE reservation_datetime > '2022-3-1' AND class = 3
 -- 36. Class id 1 reservations of March
@@ -551,7 +551,7 @@ ORDER BY city_name
 -- 13. Sorting by class id
 SELECT * FROM Seat
 ORDER BY class
--- 14. Sorting by aircraft id in revserse order
+-- 14. Sorting by aircraft id in reverse order
 SELECT * FROM Seat
 ORDER BY aircraft DESC
 -- 15. Sorting by aircraft name in reverse alphabetical order
@@ -560,7 +560,7 @@ ORDER BY aircraft_name DESC
 -- 16. Sorting by passenger id in descending order
 SELECT * FROM Passenger
 ORDER BY passenger_id DESC
--- 17. Sorting by passeger gender
+-- 17. Sorting by passenger gender
 SELECT * FROM Passenger
 ORDER BY passenger_gender
 -- 18. Sorting by passenger name
@@ -769,15 +769,15 @@ GROUP BY crew_gender
 SELECT crew_gender, AVG(crew_salary) AS AvgSalary
 FROM Crew
 GROUP BY crew_gender
--- 19. GROUPING BY role id and taking maximum salary of each gender
+-- 19. GROUPING BY role id and taking maximum salary of each role
 SELECT crew_role, MAX(crew_salary) AS MaxSalary
 FROM Crew
 GROUP BY crew_role
--- 20. GROUPING BY role id and taking minimum salary of each gender
+-- 20. GROUPING BY role id and taking minimum salary of each role
 SELECT crew_role, MIN(crew_salary) AS MinSalary
 FROM Crew
 GROUP BY crew_role
--- 21. GROUPING BY role id and taking average salary of each gender
+-- 21. GROUPING BY role id and taking average salary of each role
 SELECT crew_role, AVG(crew_salary) AS AvgSalary
 FROM Crew
 GROUP BY crew_role
@@ -958,13 +958,13 @@ WHERE country = (SELECT country_id FROM Country WHERE country_name = 'United Sta
 -- 10. Where country is Japan
 SELECT city_name FROM City
 WHERE country = (SELECT country_id FROM Country WHERE country_name = 'Japan')
--- 11. Where aircraft is Boeing 747
+-- 11. Where aircraft is Airbus A320
 SELECT flight_id FROM Flight
 WHERE aircraft = (SELECT aircraft_id FROM Aircraft WHERE aircraft_name = 'Airbus A320')
--- 12. Where aircraft is Boeing 747
+-- 12. Where aircraft is Boeing 787
 SELECT flight_id FROM Flight
 WHERE aircraft = (SELECT aircraft_id FROM Aircraft WHERE aircraft_name = 'Boeing 787')
--- 13. Where aircraft is Boeing 747
+-- 13. Where aircraft is Airbus A380
 SELECT flight_id FROM Flight
 WHERE aircraft = (SELECT aircraft_id FROM Aircraft WHERE aircraft_name = 'Airbus A380')
 -- 14. Where crew salary is less than average salary
@@ -982,7 +982,7 @@ WHERE class = (SELECT class_id FROM Class WHERE class_name = 'Business')
 -- 18. Where class is Economy
 SELECT reservation_id FROM Reservation
 WHERE class = (SELECT class_id FROM Class WHERE class_name = 'Economy')
--- 19. Where class is Business
+-- 19. Where class is First
 SELECT reservation_id FROM Reservation
 WHERE class = (SELECT class_id FROM Class WHERE class_name = 'First')
 -- 20. Where flight departure airport is 18
@@ -1134,7 +1134,7 @@ SELECT Day(reservation_datetime), COUNT(reservation_id)
 FROM Reservation
 WHERE flight = 3 AND class = 1
 GROUP BY Day(reservation_datetime)
--- 17. Total reservations of each seat excluding fligh id 2 and 4
+-- 17. Total reservations of each seat excluding flight id 2 and 4
 SELECT seat, COUNT(reservation_id)
 FROM Reservation
 WHERE flight NOT IN (2,4)
@@ -1174,7 +1174,7 @@ SELECT crew, COUNT(table_id)
 FROM CrewOnFlight
 WHERE flight NOT IN (2,4)
 GROUP BY crew
--- 25. Sum of each crew gender's salary excluding tose having salary in range of 60 to 90 thousand
+-- 25. Sum of each crew gender's salary excluding those having salary in range of 60 to 90 thousand
 SELECT crew_gender, SUM(crew_salary) FROM Crew
 WHERE crew_salary NOT BETWEEN 60000 AND 90000
 GROUP BY crew_gender
@@ -1461,7 +1461,7 @@ ON f.flight_id = cof.flight
 INNER JOIN Aircraft a
 ON a.aircraft_id = f.aircraft
 ORDER BY f.flight_arrival_datetime
--- 21. City name of each airport excpet Cities London and Toronto
+-- 21. City name of each airport except Cities London and Toronto
 SELECT a.airport_id, a.airport_name, c.city_name
 FROM Airport a
 INNER JOIN City c
@@ -1517,7 +1517,7 @@ INNER JOIN Class c
 ON c.class_id = r.class
 GROUP BY c.class_name
 ORDER BY c.class_name
--- 29. Aiports with city and country name except those having airport id form 3 to 5
+-- 29. Airports with city and country name except those having airport id form 3 to 5
 SELECT a.airport_id, a.airport_name, c.city_name, co.country_name
 FROM Airport a
 INNER JOIN City c
@@ -1742,12 +1742,12 @@ ON cr.role_id = c.crew_role
 
 
 -----------------------------FULL OUTER JOIN-----------------------------------------
--- 1. All passengers and baggages
+-- 1. All passengers and baggage
 SELECT b.baggage_id, b.baggage_detail, p.passenger_name
 FROM Passenger p
 FULL OUTER JOIN Baggage b
 ON p.passenger_id = b.passenger
--- 2. All flights and baggages
+-- 2. All flights and baggage
 SELECT b.baggage_id, b.baggage_detail, f.flight_id
 FROM Flight f
 FULL OUTER JOIN Baggage b
@@ -1911,13 +1911,13 @@ CREATE PROCEDURE view_feedback_table
 AS BEGIN
 SELECT * FROM Feedback END
 EXEC view_feedback_table
--- 12. Stored Procedure to view crew table
+-- 12. Stored Procedure to view flight table
 GO
 CREATE PROCEDURE view_flight_table
 AS BEGIN
 SELECT * FROM Flight END
 EXEC view_flight_table
--- 13. Stored Procedure to view crew table
+-- 13. Stored Procedure to view payment table
 GO
 CREATE PROCEDURE view_payment_table
 AS BEGIN
@@ -1950,7 +1950,7 @@ INNER JOIN Country co
 ON co.country_id = ci.country
 END
 EXEC view_city_with_country_name
--- 18. Stored Procedure to view aiport with city name
+-- 18. Stored Procedure to view airport with city name
 GO
 CREATE PROCEDURE view_airport_with_city_name
 AS BEGIN
@@ -2013,7 +2013,7 @@ INNER JOIN Response r
 ON r.response_id = f.response
 END
 EXEC feedback_with_passenger_name
--- 25. Stored Procedure to view aiport with city and country name
+-- 25. Stored Procedure to view airport with city and country name
 GO
 CREATE PROCEDURE airport_with_city_and_country_name
 AS BEGIN
@@ -2075,7 +2075,7 @@ AS BEGIN
 	WHERE flight_id = @f_id
 END
 EXEC specific_flight_id 5
--- 7. Stored Procedure to view baggages by giving flight id
+-- 7. Stored Procedure to view baggage by giving flight id
 GO
 CREATE PROCEDURE baggages_of_flight @f_id int
 AS BEGIN
@@ -2147,22 +2147,7 @@ AS BEGIN
 	WHERE airport_name = @a_name
 END
 EXEC specific_airport_name 'Iqbal Airport'
--- 14. Stored Procedure to view specific class using id
-GO
-CREATE PROCEDURE specific_class_id @c_id int
-AS BEGIN
-	SELECT * FROM Class
-	WHERE class_id = @c_id
-END
-EXEC specific_class_id 2
--- 15. Stored Procedure to view specific class using class name
-GO
-CREATE PROCEDURE specific_class_name @c_name varchar(20)
-AS BEGIN
-	SELECT * FROM Class
-	WHERE class_name = @c_name
-END
-EXEC specific_class_name 'First'
+
 -- 16. Stored Procedure to view specific crew using crew id
 GO
 CREATE PROCEDURE specific_crew_id @c_id int
@@ -2219,7 +2204,7 @@ AS BEGIN
 	WHERE crew = @c_id
 END
 EXEC specific_crew_flight 14
--- 23. Stored Prodcedure to view passenger's feedback using passenger id
+-- 23. Stored Procedure to view passenger's feedback using passenger id
 GO
 CREATE PROCEDURE passenger_feedback @p_id int
 AS BEGIN
@@ -2227,7 +2212,7 @@ AS BEGIN
 	WHERE passenger = @p_id
 END
 EXEC passenger_feedback 6
--- 24. Stored Prodcedure to view feedback using flight id
+-- 24. Stored Procedure to view feedback using flight id
 GO
 CREATE PROCEDURE flight_feedback @f_id int
 AS BEGIN
@@ -2235,7 +2220,7 @@ AS BEGIN
 	WHERE flight = @f_id
 END
 EXEC flight_feedback 1
--- 25. Stored Prodcedure to view feedback using response id
+-- 25. Stored Procedure to view feedback using response id
 GO
 CREATE PROCEDURE response_feedback @r_id int
 AS BEGIN
@@ -2508,7 +2493,7 @@ AS BEGIN
 	GROUP BY city
 END
 EXEC total_airports_of_city_excluding 6
--- 29. Stored Procedure to get total baggages of a passenger where flight id is greater than 2
+-- 29. Stored Procedure to get total baggage of a passenger where flight id is greater than 2
 GO
 CREATE PROCEDURE total_baggages_of_a_passenger_fgt_two @p_id int
 AS BEGIN
@@ -2555,7 +2540,7 @@ AS BEGIN
 	INSERT INTO TriggersAudit
 	VALUES('Airport Id ' + CAST(@a_id AS varchar(5)) + ' has been inserted in Airport table.', 'Insert', 'Airport')
 END
--- 3. Trigger when a row is inserted in Baggae table
+-- 3. Trigger when a row is inserted in Baggage table
 GO
 CREATE TRIGGER trigger_insert_baggage
 ON Baggage
@@ -2798,7 +2783,7 @@ AS BEGIN
 	INSERT INTO TriggersAudit
 	VALUES('Airport Id ' + CAST(@a_id AS varchar(5)) + ' has been updated in Airport table at ' + CAST(GETDATE() as varchar(30)) + '.', 'Update', 'Airport')
 END
--- 3. Trigger when a row is updated in Baggae table
+-- 3. Trigger when a row is updated in Baggage table
 GO
 CREATE TRIGGER trigger_update_baggage
 ON Baggage
@@ -3041,7 +3026,7 @@ AS BEGIN
 	INSERT INTO TriggersAudit
 	VALUES('Airport Id ' + CAST(@a_id AS varchar(5)) + ' has been deleted from Airport table.', 'Delete', 'Airport')
 END
--- 3. Trigger when a row is deleted from Baggae table
+-- 3. Trigger when a row is deleted from Baggage table
 GO
 CREATE TRIGGER trigger_delete_baggage
 ON Baggage
@@ -3269,75 +3254,75 @@ WHERE class_id = 4
 
 
 ------------------------------VIEW Statement---------------------------------------
--- 1. View for specific column(s) of aiport table
+-- 1. View for specific column of airport table
 GO
 CREATE VIEW view_airport AS
 SELECT airport_name FROM Airport
--- 2. View for specific column(s) of city table
+-- 2. View for specific column of city table
 GO
 CREATE VIEW view_cities AS
 SELECT city_name FROM City
--- 3. View for specific column(s) of country table
+-- 3. View for specific column of country table
 GO
 CREATE VIEW view_countries AS
 SELECT country_name FROM Country
--- 4. View for specific column(s) of aircraft table
+-- 4. View for specific column of aircraft table
 GO
 CREATE VIEW view_aircrafts AS
 SELECT aircraft_name FROM Aircraft
--- 5. View for specific column(s) of baggage table
+-- 5. View for specific column of baggage table
 GO
 CREATE VIEW view_baggages AS
 SELECT baggage_detail FROM Baggage
--- 6. View for specific column(s) of crew table
+-- 6. View for specific columns of crew table
 GO
 CREATE VIEW view_crew AS
 SELECT crew_name, crew_email FROM Crew
--- 7. View for specific column(s) of CrewRole table
+-- 7. View for specific column of CrewRole table
 GO
 CREATE VIEW view_crew_roles AS
 SELECT role_name FROM CrewRole
--- 8. View for specific column(s) of feedback table
+-- 8. View for specific columns of feedback table
 GO
 CREATE VIEW view_feedbacks AS
 SELECT complete_feedback, rating FROM Feedback
--- 9. View for specific column(s) of passenger table
+-- 9. View for specific column(=s of passenger table
 GO
 CREATE VIEW view_passengers AS
 SELECT passenger_id, passenger_email FROM Passenger
--- 10. View for specific column(s) of Seat table
+-- 10. View for specific columns of Seat table
 GO
 CREATE VIEW view_seats AS
 SELECT seat_name, class FROM Seat
 
 
 -----------------------VIEW Statement using logical Operators----------------------
--- 1. View for all aiports except those having aiport id 2 and 10
+-- 1. View for all airports except those having airport id 2 and 10
 GO
 CREATE VIEW view_specific_aiports_itt AS
 SELECT airport_id, airport_name FROM Airport
 WHERE airport_id NOT IN (2,10)
--- 2. View for all aiports except those having aiport id 5 and 6
+-- 2. View for all airports except those having airport id 5 and 6
 GO
 CREATE VIEW view_specific_aiports_ifs AS
 SELECT airport_id, airport_name FROM Airport
 WHERE airport_id NOT IN (5,6)
--- 3. View for all aiports except those having aiport id 9 and 10
+-- 3. View for all airports except those having airport id 9 and 10
 GO
 CREATE VIEW view_specific_aiports_int AS
 SELECT airport_id, airport_name FROM Airport
 WHERE airport_id NOT IN (9,10)
--- 4. View for all aiports except those having aiport id between 10 and 20
+-- 4. View for all airports except those having airport id between 10 and 20
 GO
 CREATE VIEW view_specific_aiports_btt AS
 SELECT airport_id, airport_name FROM Airport
 WHERE airport_id NOT BETWEEN 10 AND 20
--- 5. View for all aiports except those having aiport id between 5 and 15
+-- 5. View for all airports except those having airport id between 5 and 15
 GO
 CREATE VIEW view_specific_aiports_bff AS
 SELECT airport_id, airport_name FROM Airport
 WHERE airport_id NOT BETWEEN 5 AND 15
--- 6. View for all aiports except those having aiport id between 20 and 30
+-- 6. View for all airports except those having airport id between 20 and 30
 GO
 CREATE VIEW view_specific_aiports_nbtt AS
 SELECT airport_id, airport_name FROM Airport
@@ -3396,17 +3381,17 @@ WHERE crew_gender = 'O' AND crew_email LIKE '%yahoo.com'
 GO
 CREATE VIEW view_specific_crew_om AS
 SELECT crew_id, crew_name, crew_email FROM Crew
-WHERE crew_gender = 'O' AND crew_gender = 'M'
+WHERE crew_gender = 'O' OR crew_gender = 'M'
 -- 18. View for crew whose gender is female or other
 GO
 CREATE VIEW view_specific_crew_of AS
 SELECT crew_id, crew_name, crew_email FROM Crew
-WHERE crew_gender = 'O' AND crew_gender = 'F'
+WHERE crew_gender = 'O' OR crew_gender = 'F'
 -- 19. View for crew whose gender is male or female
 GO
 CREATE VIEW view_specific_crew_fm AS
 SELECT crew_id, crew_name, crew_email FROM Crew
-WHERE crew_gender = 'F' AND crew_gender = 'M'
+WHERE crew_gender = 'F' OR crew_gender = 'M'
 -- 20. View for crew role where role name is Pilot or Air Host
 GO
 CREATE VIEW view_specific_crew_role_pahm AS
@@ -3484,19 +3469,19 @@ WHERE crew_id >= 5 and crew_id <= 20
 -- 4. Crew name in lower case where crew id from 5 to 20
 SELECT LOWER(crew_name) FROM Crew
 WHERE crew_id >= 5 and crew_id <= 20
--- 5. Passenger name and its lenght where passenger id from 5 to 20
+-- 5. Passenger name and its length where passenger id from 5 to 20
 SELECT passenger_name, LEN(passenger_name) FROM Passenger
 WHERE passenger_id >= 5 and passenger_id <= 20
--- 6. Crew name and its lenght where crew id from 5 to 20
+-- 6. Crew name and its length where crew id from 5 to 20
 SELECT crew_name, LEN(crew_name) FROM Crew
 WHERE crew_id >= 5 and crew_id <= 20
--- 7. Baggage detail in uppper case where id greater than 1 and less than 5
+-- 7. Baggage detail in upper case where id greater than 1 and less than 5
 SELECT baggage_id, UPPER(baggage_detail) FROM Baggage
 WHERE baggage_id > 1 AND baggage_id < 5
 -- 8. Baggage detail in lower case where id greater than 1 and less than 5
 SELECT baggage_id, LOWER(baggage_detail) FROM Baggage
 WHERE baggage_id > 1 AND baggage_id < 5
--- 9. Baggage detail and its lenght where id greater than 1 and less than 5
+-- 9. Baggage detail and its length where id greater than 1 and less than 5
 SELECT baggage_id, baggage_detail, LEN(baggage_detail) FROM Baggage
 WHERE baggage_id > 1 AND baggage_id < 5
 -- 10. Passenger email in upper case where passenger id from 5 to 20
@@ -3505,46 +3490,46 @@ WHERE passenger_id >= 5 and passenger_id <= 20
 -- 11. Crew email in upper case where crew id from 5 to 20
 SELECT UPPER(crew_email) FROM Crew
 WHERE crew_id >= 5 and crew_id <= 20
--- 12. City names in upper case except those having id id 1, 10 and 20
+-- 12. City names in upper case except those having id 1, 10 and 20
 SELECT city_id, UPPER(city_name) FROM City
 WHERE city_id NOT IN (1,10,20) 
 -- 13. City names in lower case except those having id id 1, 10 and 20
 SELECT city_id, LOWER(city_name) FROM City
 WHERE city_id NOT IN (1,10,20) 
--- 14. Country names in upper case except those having id id 1 and 5
+-- 14. Country names in upper case except those having id 1 and 5
 SELECT country_id, UPPER(country_name) FROM Country
 WHERE country_id NOT IN (1,5) 
--- 15. Country names in lower case except those having id id 1 and 5
+-- 15. Country names in lower case except those having id 1 and 5
 SELECT country_id, LOWER(country_name) FROM Country
 WHERE country_id NOT IN (1,5)  
--- 16. Role names in upper case except those having id id 1 and 5
+-- 16. Role names in upper case except those having id 1 and 5
 SELECT role_id, UPPER(role_name) FROM CrewRole
 WHERE role_id NOT IN (1,5) 
--- 17. Role names in lower case except those having id id 1 and 5
+-- 17. Role names in lower case except those having id 1 and 5
 SELECT role_id, LOWER(role_name) FROM CrewRole
 WHERE role_id NOT IN (1,5) 
--- 18. Passenger email and its lenght where passenger id from 5 to 20
+-- 18. Passenger email and its length where passenger id from 5 to 20
 SELECT passenger_email, LEN(passenger_email) FROM Passenger
 WHERE passenger_id >= 5 and passenger_id <= 20
--- 19. Crew email and its lenght where crew id from 5 to 20
+-- 19. Crew email and its length where crew id from 5 to 20
 SELECT crew_email, LEN(crew_email) FROM Crew
 WHERE crew_id >= 5 and crew_id <= 20
--- 20. City name and its lenght except those having id id 1, 10 and 20
+-- 20. City name and its length except those having id 1, 10 and 20
 SELECT city_name, LEN(city_name) FROM City
 WHERE city_id NOT IN (1,10,20) 
--- 21. City name and its lenght except those having id id 1, 10 and 20
+-- 21. City name and its length except those having id 1, 10 and 20
 SELECT city_name, LEN(city_name) FROM City
 WHERE city_id NOT IN (1,10,20) 
--- 22. Country name and its lenght except those having id id 1 and 5
+-- 22. Country name and its length except those having id 1 and 5
 SELECT country_name, LEN(country_name) FROM Country
 WHERE country_id NOT IN (1,5) 
--- 23. Country name and its lenght except those having id id 1 and 5
+-- 23. Country name and its length except those having id 1 and 5
 SELECT country_name, LEN(country_name) FROM Country
 WHERE country_id NOT IN (1,5)  
--- 24. Role name and its lenght except those having id id 1 and 5
+-- 24. Role name and its length except those having id 1 and 5
 SELECT role_name, LEN(role_name) FROM CrewRole
 WHERE role_id NOT IN (1,5) 
--- 25. Role name and its lenght except those having id id 1 and 5
+-- 25. Role name and its length except those having id 1 and 5
 SELECT role_name, LEN(role_name) FROM CrewRole
 WHERE role_id NOT IN (1,5)
 -- 26. Airport name in default and upper case except those in city id 2 and 3
@@ -3553,7 +3538,7 @@ WHERE city NOT IN (2,3)
 -- 27. Airport name in default and lower case except those in city id 2 and 3
 SELECT airport_name, LOWER(airport_name) FROM Airport
 WHERE city NOT IN (2,3)
--- 28. Airport name and its lenght except those in city id 2 and 3
+-- 28. Airport name and its length except those in city id 2 and 3
 SELECT airport_name, LEN(airport_name) FROM Airport
 WHERE city NOT IN (2,3)
 -- 29. Response detail in normal and upper case where it has 'consideration' and 'considered'
@@ -3562,7 +3547,7 @@ WHERE response_detail LIKE '%consideration%' OR response_detail LIKE '%considere
 -- 30. Response detail in normal and lower case where it has 'consideration' and 'considered'
 SELECT response_detail, LOWER(response_detail) FROM Response
 WHERE response_detail LIKE '%consideration%' OR response_detail LIKE '%considered%'
--- 31. Response detail and its lenght where it has 'consideration' and 'considered'
+-- 31. Response detail and its length where it has 'consideration' and 'considered'
 SELECT response_detail, LEN(response_detail) FROM Response
 WHERE response_detail LIKE '%consideration%' OR response_detail LIKE '%considered%'
 -- 32. Substring of city name except Lahore and Delhi
@@ -3620,10 +3605,10 @@ SELECT city_id, CONCAT(ci.city_name, ' ', co.country_name) FROM City ci
 INNER JOIN Country co
 ON co.country_id = ci.country
 WHERE ci.city_id NOT IN (4,5)
--- 49. Concatinating passenger name and gender where passenger id is not in range 5 ot 10
+-- 49. Concatinating passenger name and gender where passenger id is not in range 5 and 10
 SELECT passenger_id, CONCAT(passenger_name, ' of gender ', passenger_gender) FROM Passenger
 WHERE passenger_id NOT BETWEEN 5 AND 10
--- 50. Concatinating passenger name and email where passenger id is not in range 5 ot 10
+-- 50. Concatinating passenger name and email where passenger id is not in range 5 and 10
 SELECT passenger_id, CONCAT(passenger_name, ' having email ', passenger_email) FROM Passenger
 WHERE passenger_id NOT BETWEEN 5 AND 10
 
@@ -3678,16 +3663,16 @@ WHERE crew_id > 3 AND crew_address LIKE '%Islamabad%'
 -- 16. Replacing Karachi with KAR in crew address where crew id greater than 3 and crew address has Karachi in it
 SELECT crew_id, REPLACE(crew_address, 'Karachi', 'KAR') FROM Crew
 WHERE crew_id > 3 AND crew_address LIKE '%Karachi%'
--- 17. Replacing Quetta with QUE in crew adress where crew id greater than 3 and crew address has Quetta in it
+-- 17. Replacing Quetta with QUE in crew address where crew id greater than 3 and crew address has Quetta in it
 SELECT crew_id, REPLACE(crew_address, 'Quetta', 'QUE') FROM Crew
 WHERE crew_id > 3 AND crew_address LIKE '%Quetta%'
--- 18. Replacing Peshawar with PES in crew adress where crew id greater than 3 and crew address has Peshawar in it
+-- 18. Replacing Peshawar with PES in crew address where crew id greater than 3 and crew address has Peshawar in it
 SELECT crew_id, REPLACE(crew_address, 'Peshawar', 'PES') FROM Crew
 WHERE crew_id > 3 AND crew_address LIKE '%Peshawar%'
--- 19. Replacing Sui with SUI in crew adress where crew id greater than 3 and crew address has Sui in it
+-- 19. Replacing Sui with SUI in crew address where crew id greater than 3 and crew address has Sui in it
 SELECT crew_id, REPLACE(crew_address, 'Sui', 'SUI') FROM Crew
 WHERE crew_id > 3 AND crew_address LIKE '%Sui%'
--- 20. Replacing Kala Shah Kaku with KSK in crew adress where crew id greater than 3 and crew address has Kala Shah Kaku in it
+-- 20. Replacing Kala Shah Kaku with KSK in crew address where crew id greater than 3 and crew address has Kala Shah Kaku in it
 SELECT crew_id, REPLACE(crew_address, 'Kala Shah Kaku', 'KSK') FROM Crew
 WHERE crew_id > 3 AND crew_address LIKE '%Kala Shah Kaku%'
 -- 21. Index of Airport in airport name where airport id not in range of 5 to 10
@@ -3708,46 +3693,46 @@ WHERE crew_gender = 'M' OR crew_id > 10
 -- 26. Trimming aircraft name if it has useless spaces where aircraft id is greater than 1 and less than 7
 SELECT aircraft_id, TRIM(aircraft_name) FROM Aircraft
 WHERE aircraft_id > 1 AND aircraft_id < 7
--- 27. Trimming baggage detail if it has useless spaces where fligth id is 1 and passenger id is greater than 40
+-- 27. Trimming baggage detail if it has useless spaces where flight id is 1 and passenger id is greater than 40
 SELECT baggage_id, TRIM(baggage_detail) FROM Baggage
 WHERE flight = 1 OR passenger > 40
--- 28. Trimming city name if it has uselesss spaces where city name is neither Islamabad nor Toronto
+-- 28. Trimming city name if it has useless spaces where city name is neither Islamabad nor Toronto
 SELECT city_id, TRIM(city_name) FROM City
 WHERE city_name NOT IN ('Islamabad', 'Toronto')
--- 29. Trimming country name if it has uselesss spaces where country name is neither Canada nor Japan
+-- 29. Trimming country name if it has useless spaces where country name is neither Canada nor Japan
 SELECT country_id, TRIM(country_name) FROM Country
 WHERE country_name NOT IN ('Japan', 'Canada')
--- 30. Trimming role name if it has uselesss spaces where role name is neither Pilot nor Air Host
+-- 30. Trimming role name if it has useless spaces where role name is neither Pilot nor Air Host
 SELECT role_id, TRIM(role_name) FROM CrewRole
 WHERE role_name NOT IN ('Pilot', 'Air Host')
--- 31. Trimming feedback if it has uselesss spaces where feedback id is neither 1 nor 2
+-- 31. Trimming feedback if it has useless spaces where feedback id is neither 1 nor 2
 SELECT feedback_id, TRIM(complete_feedback) FROM Feedback
 WHERE feedback_id NOT IN (1, 2)
--- 32. Trimming feedback if it has uselesss spaces where feedback id is neither 1 nor 3
+-- 32. Trimming feedback if it has useless spaces where feedback id is neither 1 nor 3
 SELECT feedback_id, TRIM(complete_feedback) FROM Feedback
 WHERE feedback_id NOT IN (1, 3)
--- 33. Trimming feedback if it has uselesss spaces where feedback id is neither 2 nor 3
+-- 33. Trimming feedback if it has useless spaces where feedback id is neither 2 nor 3
 SELECT feedback_id, TRIM(complete_feedback) FROM Feedback
 WHERE feedback_id NOT IN (2, 3)
--- 34. Trimming response detail if it has uselesss spaces where response id is neither 1 nor 3
+-- 34. Trimming response detail if it has useless spaces where response id is neither 1 nor 3
 SELECT response_id, TRIM(response_detail) FROM Response
 WHERE response_id NOT IN (1, 3)
--- 35. Trimming response detail if it has uselesss spaces where response id is neither 1 nor 2
+-- 35. Trimming response detail if it has useless spaces where response id is neither 1 nor 2
 SELECT response_id, TRIM(response_detail) FROM Response
 WHERE response_id NOT IN (1, 2)
--- 36. Trimming response detail if it has uselesss spaces where response id is neither 2 nor 3
+-- 36. Trimming response detail if it has useless spaces where response id is neither 2 nor 3
 SELECT response_id, TRIM(response_detail) FROM Response
 WHERE response_id NOT IN (2, 3)
--- 37. Trimming seat name if it has uselesss spaces where seat id is not 5, 10 and 20
+-- 37. Trimming seat name if it has useless spaces where seat id is not 5, 10 and 20
 SELECT seat_id, TRIM(seat_name) FROM Seat
 WHERE seat_id NOT IN (5, 10, 20)
--- 38. Trimming seat name if it has uselesss spaces where seat id is not in range 20 to 30
+-- 38. Trimming seat name if it has useless spaces where seat id is not in range 20 to 30
 SELECT seat_id, TRIM(seat_name) FROM Seat
 WHERE seat_id NOT BETWEEN 20 AND 30
--- 39. Trimming seat name if it has uselesss spaces where seat id is less than 20 or greater than 50
+-- 39. Trimming seat name if it has useless spaces where seat id is less than 20 or greater than 50
 SELECT seat_id, TRIM(seat_name) FROM Seat
 WHERE seat_id < 20 OR seat_id > 50
--- 40. Trimming seat name if it has uselesss spaces where seat id is less not than 20 and not greater than 50
+-- 40. Trimming seat name if it has useless spaces where seat id is less not than 20 and not greater than 50
 SELECT seat_id, TRIM(seat_name) FROM Seat
 WHERE NOT (seat_id < 20 OR seat_id > 50)
 -- 41. Truncating arrival date time to Year precision where flight id is neither 1 nor 3
@@ -3770,13 +3755,13 @@ SELECT flight_id, DATETRUNC(SECOND, flight_arrival_datetime) FROM Flight
 WHERE flight_id NOT IN (1, 3)
 -- Working of ROUND operator
 SELECT ROUND(3.14267, 2)
--- 47. Rounding crew salary to two decimal places where crew gender is male or crew address has lahore in it
+-- 47. Rounding crew salary to two decimal places where crew gender is male or crew address has Lahore in it
 SELECT crew_id, ROUND(CONVERT(DECIMAL(10,4), crew_salary), 2) FROM Crew
 WHERE crew_gender = 'M' OR crew_address LIKE '%Lahore%'
--- 48. Rounding crew salary to two decimal places where crew gender is female or crew address has lahore in it
+-- 48. Rounding crew salary to two decimal places where crew gender is female or crew address has Lahore in it
 SELECT crew_id, ROUND(CONVERT(DECIMAL(10,4), crew_salary), 2) FROM Crew
 WHERE crew_gender = 'F' OR crew_address LIKE '%Lahore%'
--- 49. Rounding crew salary to two decimal places where crew gender is other or crew address has lahore in it
+-- 49. Rounding crew salary to two decimal places where crew gender is other or crew address has Lahore in it
 SELECT crew_id, ROUND(CONVERT(DECIMAL(10,4), crew_salary), 2) FROM Crew
 WHERE crew_gender = 'O' OR crew_address LIKE '%Lahore%'
 -- 50. Rounding crew salary to two decimal places where crew gender is male or other
@@ -3946,7 +3931,6 @@ BEGIN CATCH
 	SELECT ERROR_MESSAGE() AS ErrMessage
 END CATCH
 -- 6. Trying to set aircraft id 25 (which is not present in aircraft table)
-BEGIN TRAN
 BEGIN TRY
 	UPDATE Flight SET aircraft = 25
 	WHERE flight_id = 5
@@ -3955,7 +3939,6 @@ BEGIN CATCH
 	SELECT ERROR_MESSAGE() AS ErrMessage
 END CATCH
 -- 7. Trying to set response id 50 (which is not present in response table)
-BEGIN TRAN
 BEGIN TRY
 	UPDATE Feedback SET response = 50
 	WHERE feedback_id = 2
