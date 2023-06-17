@@ -168,88 +168,85 @@ ALTER TABLE Flight ADD time_taken INT DEFAULT NULL
 ALTER TABLE Response ADD response_code varchar(1) DEFAULT NULL
 -- 10. ADD COLUMN comfort_level 
 ALTER TABLE Seat ADD comfort_level varchar(10) DEFAULT NULL
-
--- 1. MODIFY data type of manufacturing_year
+-- 11. MODIFY data type of manufacturing_year
 ALTER TABLE Aircraft ALTER COLUMN manufacturing_year INT
--- 2. MODIFY data type of area
+-- 12. MODIFY data type of area
 ALTER TABLE Airport ALTER COLUMN area varchar(10)
--- 3. MODIFY data type of checked_by
+-- 13. MODIFY data type of checked_by
 ALTER TABLE Baggage ALTER COLUMN checked_by BIGINT
--- 4. MODIFY data type of city_code
+-- 14. MODIFY data type of city_code
 ALTER TABLE City ALTER COLUMN city_code INT
--- 5. MODIFY data type of class_code
+-- 15. MODIFY data type of class_code
 ALTER TABLE Class ALTER COLUMN class_code INT
--- 6. MODIFY data type of country_code
+-- 16. MODIFY data type of country_code
 ALTER TABLE Country ADD country_code INT
--- 7. MODIFY data type of phone
+-- 17. MODIFY data type of phone
 ALTER TABLE Crew ALTER COLUMN phone BIGINT
--- 8. MODIFY data type of time_taken
+-- 18. MODIFY data type of time_taken
 ALTER TABLE Flight ALTER COLUMN time_taken TIME
--- 9. MODIFY data type of response_code
+-- 19. MODIFY data type of response_code
 ALTER TABLE Response ALTER COLUMN response_code INT
--- 10. MODIFY data type of comfort_level 
+-- 20. MODIFY data type of comfort_level 
 ALTER TABLE Seat ALTER COLUMN comfort_level INT
-
--- 1. RENAMING Column aircraft_name
+-- 21. RENAMING Column aircraft_name
 EXEC sp_rename 'dbo.Aircraft.aircraft_name','aircraft','COLUMN'
--- 2. RENAMING Column airport_name
+-- 22. RENAMING Column airport_name
 EXEC sp_rename 'dbo.Airport.airport_name','airport','COLUMN'
--- 3. RENAMING Column baggage_detail
+-- 23. RENAMING Column baggage_detail
 EXEC sp_rename 'dbo.Baggage.baggage_detail','comments','COLUMN'
--- 4. RENAMING Column country
+-- 24. RENAMING Column country
 EXEC sp_rename 'dbo.City.country','country_code','COLUMN'
--- 5. RENAMING Column response_id
+-- 25. RENAMING Column response_id
 EXEC sp_rename 'dbo.Response.response_id','response_code','COLUMN'
--- 6. RENAMING Column aircraft_id
+-- 26. RENAMING Column aircraft_id
 EXEC sp_rename 'dbo.Aircraft.aircraft_id','aircraft_code','COLUMN'
--- 7. RENAMING Column flight_id
+-- 27. RENAMING Column flight_id
 EXEC sp_rename 'dbo.Flight.flight_id','f_id','COLUMN'
--- 8. RENAMING Column reservation_id
+-- 28. RENAMING Column reservation_id
 EXEC sp_rename 'dbo.Reservation.reservation_id','r_id','COLUMN'
--- 9. RENAMING Column city_id
+-- 29. RENAMING Column city_id
 EXEC sp_rename 'dbo.City.city_id','c_id','COLUMN'
--- 10. RENAMING Column seat_id
+-- 30. RENAMING Column seat_id
 EXEC sp_rename 'dbo.Seat.seat_id','s_id','COLUMN'
--- 11. RENAMING Column baggage_id
+-- 31. RENAMING Column baggage_id
 EXEC sp_rename 'dbo.Baggage.baggage_id','b_id','COLUMN'
--- 12. RENAMING Column flight
+-- 32. RENAMING Column flight
 EXEC sp_rename 'dbo.Baggage.flight','f_id','COLUMN'
--- 13. RENAMING Column flight_departure_time
+-- 33. RENAMING Column flight_departure_time
 EXEC sp_rename 'dbo.Flight.flight_departure_time','f_dep_time','COLUMN'
--- 14. RENAMING Column flight_departure_date
+-- 34. RENAMING Column flight_departure_date
 EXEC sp_rename 'dbo.Flight.flight_departure_date','f_dep_date','COLUMN'
--- 15. RENAMING Column flight_arrival_time
+-- 35. RENAMING Column flight_arrival_time
 EXEC sp_rename 'dbo.Flight.flight_arrival_time','f_arr_time','COLUMN'
--- 16. RENAMING Column flight_arrival_date
+-- 36. RENAMING Column flight_arrival_date
 EXEC sp_rename 'dbo.Flight.flight_arrival_date','f_arr_date','COLUMN'
--- 17. RENAMING Column city_name
+-- 37. RENAMING Column city_name
 EXEC sp_rename 'dbo.City.city_name','c_name','COLUMN'
--- 18. RENAMING Column class
+-- 38. RENAMING Column class
 EXEC sp_rename 'dbo.Seat.class','class_id','COLUMN'
--- 19. RENAMING Column flight
+-- 39. RENAMING Column flight
 EXEC sp_rename 'dbo.Feedback.flight','flight_id','COLUMN'
--- 20. RENAMING Column response
+-- 40. RENAMING Column response
 EXEC sp_rename 'dbo.Feedback.response','response_id','COLUMN'
-
--- 1. DROPING COLUMN manufacturing_year
+-- 41. DROPING COLUMN manufacturing_year
 ALTER TABLE Aircraft DROP COLUMN manufacturing_year
--- 2. DROPPING COLUMN area
+-- 42. DROPPING COLUMN area
 ALTER TABLE Airport DROP COLUMN area
--- 3. DROPPING COLUMN checked_status
+-- 43. DROPPING COLUMN checked_status
 ALTER TABLE Baggage DROP COLUMN checked_status
--- 4. DROPPING COLUMN city_code
+-- 44. DROPPING COLUMN city_code
 ALTER TABLE City DROP COLUMN city_code
--- 5. DROPPING COLUMN class_code
+-- 45. DROPPING COLUMN class_code
 ALTER TABLE Class DROP COLUMN class_code
--- 6. DROPPING COLUMN country_code
+-- 46. DROPPING COLUMN country_code
 ALTER TABLE Country DROP COLUMN country_code
--- 7. DROPPING COLUMN phone
+-- 47. DROPPING COLUMN phone
 ALTER TABLE Crew DROP COLUMN phone
--- 8. DROPPING COLUMN time_taken
+-- 48. DROPPING COLUMN time_taken
 ALTER TABLE Flight DROP COLUMN time_taken
--- 9. DROPPING COLUMN response_code
+-- 49. DROPPING COLUMN response_code
 ALTER TABLE Response DROP COLUMN response_code
--- 10. DROPPING COLUMN comfort_level 
+-- 50. DROPPING COLUMN comfort_level 
 ALTER TABLE Seat DROP COLUMN comfort_level
 
 
@@ -334,26 +331,25 @@ SELECT crew_id, crew_name FROM Crew
 SELECT reservation_id, reservation_datetime FROM Reservation
 -- 10. Selecting all info about Flight table
 SELECT * FROM Flight
-
--- 1. Selecting distinct gender from Crew table
+-- 11. Selecting distinct gender from Crew table
 SELECT DISTINCT crew_gender FROM Crew
--- 2. Selecting distinct gender from Passenger table
+-- 12. Selecting distinct gender from Passenger table
 SELECT DISTINCT passenger_gender FROM Passenger
--- 3. Selecting distinct arrival airport from Flight table
+-- 13. Selecting distinct arrival airport from Flight table
 SELECT DISTINCT flight_arrival_airport FROM Flight
--- 4. Selecting distinct departure airport from Flight table
+-- 14. Selecting distinct departure airport from Flight table
 SELECT DISTINCT flight_departure_airport FROM Flight
--- 5. Selecting distinct arrival datetime from Flight table
+-- 15. Selecting distinct arrival datetime from Flight table
 SELECT DISTINCT flight_arrival_datetime FROM Flight
--- 6. Selecting distinct departure datetime from Flight table
+-- 16. Selecting distinct departure datetime from Flight table
 SELECT DISTINCT flight_departure_datetime FROM Flight
--- 7. Selecting distinct passenger from Baggage table
+-- 17. Selecting distinct passenger from Baggage table
 SELECT DISTINCT passenger FROM Baggage
--- 8. Selecting distinct crew salary from Crew table
+-- 18. Selecting distinct crew salary from Crew table
 SELECT DISTINCT crew_salary FROM Crew
--- 9. Selecting distinct passenger from Feedback table
+-- 19. Selecting distinct passenger from Feedback table
 SELECT DISTINCT passenger FROM Feedback
--- 10. Selecting distinct rating from Feedback table
+-- 20. Selecting distinct rating from Feedback table
 SELECT DISTINCT rating FROM Feedback
 
 
@@ -418,7 +414,6 @@ WHERE city_name NOT IN ('Lahore', 'Delhi')
 -- 20. Payments which were not made by cash
 SELECT * FROM Payment
 WHERE NOT payment_method = 'Cash'
-
 -- 21. Cash payments less than 50 thousand
 SELECT * FROM Payment
 WHERE payment_method = 'Cash' AND amount < 50000
@@ -693,67 +688,67 @@ ORDER BY baggage_id DESC
 
 
 ---------------------------------GROUP BY----------------------------------------------
--- 1. GROUPING BY gender and calcualting total occurences of each
+-- 1. GROUPING BY gender and calculating total occurences of each
 SELECT crew_gender, COUNT(crew_id) AS Total
 FROM Crew
 GROUP BY crew_gender
--- 2. GROUPING BY role id and calcualting total occurences of each
+-- 2. GROUPING BY role id and calculating total occurences of each
 SELECT crew_role, COUNT(crew_id) AS Total
 FROM Crew
 GROUP BY crew_role
--- 3. GROUPING BY salary and calcualting total occurences of each
+-- 3. GROUPING BY salary and calculating total occurences of each
 SELECT crew_salary, COUNT(crew_id) AS Total
 FROM Crew
 GROUP BY crew_salary
--- 4. GROUPING BY country id and calcualting total occurences of each
+-- 4. GROUPING BY country id and calculating total occurences of each
 SELECT country, COUNT(country) AS Total
 FROM City
 GROUP BY country
--- 5. GROUPING BY flight id and calcualting total occurences of each
+-- 5. GROUPING BY flight id and calculating total occurences of each
 SELECT flight, COUNT(reservation_id) AS Total
 FROM Reservation
 GROUP BY flight
--- 6. GROUPING BY class id and calcualting total occurences of each
+-- 6. GROUPING BY class id and calculating total occurences of each
 SELECT class, COUNT(reservation_id) AS Total
 FROM Reservation
 GROUP BY class
--- 7. GROUPING BY month number and calcualting total occurences of each
+-- 7. GROUPING BY month number and calculating total occurences of each
 SELECT Month(reservation_datetime) AS MonthNumber, COUNT(reservation_id) AS Total
 FROM Reservation
 GROUP BY Month(reservation_datetime)
--- 8. GROUPING BY day number and calcualting total occurences of each
+-- 8. GROUPING BY day number and calculating total occurences of each
 SELECT Day(reservation_datetime) AS DayNumber, COUNT(reservation_id) AS Total
 FROM Reservation
 GROUP BY Day(reservation_datetime)
--- 9. GROUPING BY year number and calcualting total occurences of each
+-- 9. GROUPING BY year number and calculating total occurences of each
 SELECT YEAR(reservation_datetime) AS YearNumber, COUNT(reservation_id) AS Total
 FROM Reservation
 GROUP BY YEAR(reservation_datetime)
--- 10. GROUPING BY seat id and calcualting total occurences of each
+-- 10. GROUPING BY seat id and calculating total occurences of each
 SELECT seat, COUNT(reservation_id) AS Total
 FROM Reservation
 GROUP BY seat
--- 11. GROUPING BY amount and calcualting total occurences of each
+-- 11. GROUPING BY amount and calculating total occurences of each
 SELECT amount, COUNT(payment_id) AS Total
 FROM Payment
 GROUP BY amount
--- 11. GROUPING BY payment method and calcualting total occurences of each
+-- 11. GROUPING BY payment method and calculating total occurences of each
 SELECT payment_method, COUNT(payment_id) AS Total
 FROM Payment
 GROUP BY payment_method
--- 12. GROUPING BY city id and calcualting total occurences of each
+-- 12. GROUPING BY city id and calculating total occurences of each
 SELECT city, COUNT(airport_id) AS Total
 FROM Airport
 GROUP BY city
--- 13. GROUPING BY flight id and calcualting total occurences of each
+-- 13. GROUPING BY flight id and calculating total occurences of each
 SELECT flight, COUNT(table_id) AS Total
 FROM CrewOnFlight
 GROUP BY flight
--- 14. GROUPING BY crew id and calcualting total occurences of each
+-- 14. GROUPING BY crew id and calculating total occurences of each
 SELECT crew, COUNT(table_id) AS Total
 FROM CrewOnFlight
 GROUP BY crew
--- 15. GROUPING BY gender and calcualting total occurences of each
+-- 15. GROUPING BY gender and calculating total occurences of each
 SELECT passenger_gender, COUNT(passenger_id) AS Total
 FROM Passenger
 GROUP BY passenger_gender
@@ -781,101 +776,101 @@ GROUP BY crew_role
 SELECT crew_role, AVG(crew_salary) AS AvgSalary
 FROM Crew
 GROUP BY crew_role
--- 22. GROUPING BY rating and calcualting total occurences of each
+-- 22. GROUPING BY rating and calculating total occurences of each
 SELECT rating, COUNT(feedback_id) AS Total
 FROM Feedback
 GROUP BY rating
--- 23. GROUPING BY passenger id and calcualting total occurences of each
+-- 23. GROUPING BY passenger id and calculating total occurences of each
 SELECT passenger, COUNT(feedback_id) AS Total
 FROM Feedback
 GROUP BY passenger
--- 24. GROUPING BY flight id and calcualting total occurences of each
+-- 24. GROUPING BY flight id and calculating total occurences of each
 SELECT flight, COUNT(feedback_id) AS Total
 FROM Feedback
 GROUP BY flight
--- 25. GROUPING BY response and calcualting total occurences of each
+-- 25. GROUPING BY response and calculating total occurences of each
 SELECT rating, COUNT(feedback_id) AS Total
 FROM Feedback
 GROUP BY response
 
 
 ----------------------GROUP BY using AND, OR, NOT Operators----------------------------
--- 1. GROUPING BY gender and calcualting total occurences of each where crew id is greater than 1 and less than 10
+-- 1. GROUPING BY gender and calculating total occurences of each where crew id is greater than 1 and less than 10
 SELECT crew_gender, COUNT(crew_id) AS Total
 FROM Crew
 WHERE crew_id > 1 AND crew_id < 10
 GROUP BY crew_gender
--- 2. GROUPING BY role id and calcualting total occurences of each where gender is male and female
+-- 2. GROUPING BY role id and calculating total occurences of each where gender is male and female
 SELECT crew_role, COUNT(crew_id) AS Total
 FROM Crew
 WHERE crew_gender = 'M' AND crew_gender = 'F'
 GROUP BY crew_role
--- 3. GROUPING BY salary and calcualting total occurences of each where crew role id is greater than 5 and less than 8
+-- 3. GROUPING BY salary and calculating total occurences of each where crew role id is greater than 5 and less than 8
 SELECT crew_salary, COUNT(crew_id) AS Total
 FROM Crew
 WHERE crew_role > 5 AND crew_role < 8
 GROUP BY crew_salary
--- 4. GROUPING BY country id and calcualting total occurences of each where country id is greater than 4 and less than 7
+-- 4. GROUPING BY country id and calculating total occurences of each where country id is greater than 4 and less than 7
 SELECT country, COUNT(country) AS Total
 FROM City
 WHERE country > 4 AND country < 7
 GROUP BY country
--- 5. GROUPING BY flight id and calcualting total occurences of each where reservation date is greater than 1st March 20222 and flight is greater than 2
+-- 5. GROUPING BY flight id and calculating total occurences of each where reservation date is greater than 1st March 20222 and flight is greater than 2
 SELECT flight, COUNT(reservation_id) AS Total
 FROM Reservation
 WHERE reservation_datetime > '2022-3-1' AND flight > 2
 GROUP BY flight
--- 6. GROUPING BY class id and calcualting total occurences of each where reservation date is between 1st March 2022 and 1st December 2022
+-- 6. GROUPING BY class id and calculating total occurences of each where reservation date is between 1st March 2022 and 1st December 2022
 SELECT class, COUNT(reservation_id) AS Total
 FROM Reservation
 WHERE reservation_datetime > '2022-3-1' AND reservation_datetime < '2022-12-1'
 GROUP BY class
--- 7. GROUPING BY month number and calcualting total occurences of each where flight id is 1 and class id is also 1
+-- 7. GROUPING BY month number and calculating total occurences of each where flight id is 1 and class id is also 1
 SELECT Month(reservation_datetime) AS MonthNumber, COUNT(reservation_id) AS Total
 FROM Reservation
 WHERE flight = 1 and class = 1
 GROUP BY Month(reservation_datetime)
--- 8. GROUPING BY day number and calcualting total occurences of each where flight id is 2 and class id is 1
+-- 8. GROUPING BY day number and calculating total occurences of each where flight id is 2 and class id is 1
 SELECT Day(reservation_datetime) AS DayNumber, COUNT(reservation_id) AS Total
 FROM Reservation
 WHERE flight = 2 and class = 1
 GROUP BY Day(reservation_datetime)
--- 9. GROUPING BY year number and calcualting total occurences of each where flight id is 1 and class id is 3
+-- 9. GROUPING BY year number and calculating total occurences of each where flight id is 1 and class id is 3
 SELECT YEAR(reservation_datetime) AS YearNumber, COUNT(reservation_id) AS Total
 FROM Reservation
 WHERE flight = 1 and class = 3
 GROUP BY YEAR(reservation_datetime)
--- 10. GROUPING BY seat id and calcualting total occurences of each except flight 1 and 5
+-- 10. GROUPING BY seat id and calculating total occurences of each except flight 1 and 5
 SELECT seat, COUNT(reservation_id) AS Total
 FROM Reservation
 WHERE flight NOT IN (1,5)
 GROUP BY seat
--- 11. GROUPING BY amount and calcualting total occurences of each except between 50 and 80 thousand
+-- 11. GROUPING BY amount and calculating total occurences of each except between 50 and 80 thousand
 SELECT amount, COUNT(payment_id) AS Total
 FROM Payment
 WHERE amount NOT BETWEEN 50000 AND 80000
 GROUP BY amount
--- 12. GROUPING BY payment method and calcualting total occurences of each excluding Cash
+-- 12. GROUPING BY payment method and calculating total occurences of each excluding Cash
 SELECT payment_method, COUNT(payment_id) AS Total
 FROM Payment
 WHERE NOT payment_method = 'Cash'
 GROUP BY payment_method
--- 13. GROUPING BY city id and calcualting total occurences of each excluding those between airport ids 10 and 17
+-- 13. GROUPING BY city id and calculating total occurences of each excluding those between airport ids 10 and 17
 SELECT city, COUNT(airport_id) AS Total
 FROM Airport
 WHERE airport_id NOT BETWEEN 10 AND 17
 GROUP BY city
--- 14. GROUPING BY flight id and calcualting total occurences of each excluding crew ids 3 and 6
+-- 14. GROUPING BY flight id and calculating total occurences of each excluding crew ids 3 and 6
 SELECT flight, COUNT(table_id) AS Total
 FROM CrewOnFlight
 WHERE crew NOT IN (3,6)
 GROUP BY flight
--- 15. GROUPING BY crew id and calcualting total occurences of each excluding flight ids 1 and 3
+-- 15. GROUPING BY crew id and calculating total occurences of each excluding flight ids 1 and 3
 SELECT crew, COUNT(table_id) AS Total
 FROM CrewOnFlight
 WHERE flight NOT IN (1,3)
 GROUP BY crew
--- 16. GROUPING BY gender and calcualting total occurences of each except passenger id between 20 and 30
+-- 16. GROUPING BY gender and calculating total occurences of each except passenger id between 20 and 30
 SELECT passenger_gender, COUNT(passenger_id) AS Total
 FROM Passenger
 WHERE passenger_id NOT BETWEEN 20 AND 30 
@@ -910,17 +905,17 @@ SELECT crew_role, AVG(crew_salary) AS AvgSalary
 FROM Crew
 WHERE crew_gender = 'M' OR crew_salary > 100000
 GROUP BY crew_role
--- 23. GROUPING BY rating and calcualting total occurences of each where passenger id is greater than 5 or rating is 3
+-- 23. GROUPING BY rating and calculating total occurences of each where passenger id is greater than 5 or rating is 3
 SELECT rating, COUNT(feedback_id) AS Total
 FROM Feedback
 WHERE passenger >= 5 OR rating > 3
 GROUP BY rating
--- 24. GROUPING BY passenger id and calcualting total occurences of each where flight id is greater than 1 and passenger id is greater than 10
+-- 24. GROUPING BY passenger id and calculating total occurences of each where flight id is greater than 1 and passenger id is greater than 10
 SELECT passenger, COUNT(feedback_id) AS Total
 FROM Feedback
 WHERE passenger >= 10 OR flight > 1
 GROUP BY passenger
--- 25. GROUPING BY flight id and calcualting total occurences of each where rating is greater than 8 and feedback id is greater than 1
+-- 25. GROUPING BY flight id and calculating total occurences of each where rating is greater than 8 and feedback id is greater than 1
 SELECT flight, COUNT(feedback_id) AS Total
 FROM Feedback
 WHERE feedback_id > 1 OR rating > 8
@@ -1018,6 +1013,99 @@ WHERE city = (SELECT city_id FROM City WHERE city_name = 'London')
 -- 30. Where flight departure airport is 18
 SELECT baggage_id, baggage_detail FROM Baggage
 WHERE flight IN (SELECT flight_id FROM Flight WHERE flight_departure_airport = 18)
+
+
+------------------------Subqueries using logical operators-------------------------
+-- 1. Where crew salary is greater than average salary of crew excluding role id 1 and 2
+SELECT crew_name, crew_salary FROM Crew
+WHERE crew_salary > (SELECT AVG(crew_salary) FROM crew WHERE crew_role NOT IN (1,2))
+-- 2. Where salary is greater than highest salary of role id 1 and 4
+SELECT crew_name, crew_salary FROM Crew
+WHERE crew_salary > (SELECT MAX(crew_salary) FROM crew WHERE crew_role = 1 OR crew_role = 4)
+-- 3. Who have more salary than Zara Khan and Ali Khan
+SELECT * FROM Crew
+WHERE crew_salary > (SELECT MAX(crew_salary) FROM Crew WHERE crew_name = 'Zara Khan' OR crew_name = 'Ali Khan')
+-- 4. Where salary is less than lowest salary of role id 4 and 2
+SELECT crew_name, crew_salary FROM Crew
+WHERE crew_salary < (SELECT MIN(crew_salary) FROM crew WHERE crew_role = 4 OR crew_role = 2)
+-- 5. Names of cities from Pakistan and India
+SELECT city_name FROM City
+WHERE country IN (SELECT country_id FROM Country WHERE country_name = 'Pakistan' OR country_name = 'India')
+-- 6. Where aircraft is Boeing 747 and Boeing 787
+SELECT flight_id FROM Flight
+WHERE aircraft IN (SELECT aircraft_id FROM Aircraft WHERE aircraft_name = 'Boeing 747' OR aircraft_name = 'Boeing 787')
+-- 7. Where crew role is Pilot or Air Host
+SELECT crew_id, crew_name FROM Crew
+WHERE crew_role IN (SELECT crew_id FROM CrewRole WHERE role_name = 'Pilot' OR crew_role = 'Air Host')
+-- 8. Where country is India or United Kingdom
+SELECT city_name FROM City
+WHERE country IN (SELECT country_id FROM Country WHERE country_name = 'India' OR country_name = 'United Kingdom')
+-- 9. Where country is United States or United States
+SELECT city_name FROM City
+WHERE country IN (SELECT country_id FROM Country WHERE country_name = 'United States' OR country_name = 'Canada')
+-- 10. Where country is Japan or Nepal
+SELECT city_name FROM City
+WHERE country IN (SELECT country_id FROM Country WHERE country_name = 'Japan' OR country_name = 'Nepal')
+-- 11. Where aircraft is Airbus A320 or Boeing 787
+SELECT flight_id FROM Flight
+WHERE aircraft IN (SELECT aircraft_id FROM Aircraft WHERE aircraft_name = 'Airbus A320' OR aircraft_name = 'Boeing 787')
+-- 12. Where aircraft id is neither 1 and 2
+SELECT flight_id FROM Flight
+WHERE aircraft IN (SELECT aircraft_id FROM Aircraft WHERE aircraft_id NOT IN (1,2))
+-- 13. Where aircraft is Airbus A380 or Airbus A320
+SELECT flight_id FROM Flight
+WHERE aircraft IN (SELECT aircraft_id FROM Aircraft WHERE aircraft_name = 'Airbus A380' OR aircraft_name = 'Airbus A320')
+-- 14. Where crew salary is less than average salary of crew having id greater than 10 and address containing word Lahore
+SELECT crew_name, crew_salary FROM Crew
+WHERE crew_salary < (SELECT AVG(crew_salary) FROM crew WHERE crew_id > 10 AND crew_address LIKE '%Lahore%')
+-- 15. Who have more salary than Ali Khan and Hassan Ali
+SELECT * FROM Crew
+WHERE crew_salary > (SELECT MAX(crew_salary) FROM Crew WHERE crew_name = 'Ali Khan' OR crew_name = 'Hassan Ali')
+-- 16. Who have less salary than Ali Khan and Hassan Ali
+SELECT * FROM Crew
+WHERE crew_salary < (SELECT MIN(crew_salary) FROM Crew WHERE crew_name = 'Ali Khan' OR crew_name = 'Hassan Ali')
+-- 17. Where class is Business or First
+SELECT reservation_id FROM Reservation
+WHERE class IN (SELECT class_id FROM Class WHERE class_name = 'Business' OR class_name = 'First')
+-- 18. Where class is Economy or First
+SELECT reservation_id FROM Reservation
+WHERE class IN (SELECT class_id FROM Class WHERE class_name = 'Economy' OR class_name = 'First')
+-- 19. Where class is Economy or Business
+SELECT reservation_id FROM Reservation
+WHERE class IN (SELECT class_id FROM Class WHERE class_name = 'Economy' OR class_name = 'Business')
+-- 20. Where flight departure airport is not 18, 19 or 20
+SELECT crew FROM CrewOnFlight
+WHERE flight IN (SELECT flight_id FROM Flight WHERE flight_departure_airport NOT IN (18,19,20))
+-- 21. Where flight departure airport is 13 or 18
+SELECT crew FROM CrewOnFlight
+WHERE flight IN (SELECT flight_id FROM Flight WHERE flight_departure_airport = 13 OR flight_departure_airport = 18)
+-- 22. Where flight departure airport is 5 or 18
+SELECT crew FROM CrewOnFlight
+WHERE flight IN (SELECT flight_id FROM Flight WHERE flight_departure_airport = 5 OR flight_departure_airport = 18)
+-- 23. Where flight arrival airport is 19 or departure aiport is 18
+SELECT crew FROM CrewOnFlight
+WHERE flight IN (SELECT flight_id FROM Flight WHERE flight_arrival_airport = 19 OR flight_departure_airport = 18)
+-- 24. Where flight arrival airport is 17 or departure aiport is 18
+SELECT crew FROM CrewOnFlight
+WHERE flight IN (SELECT flight_id FROM Flight WHERE flight_arrival_airport = 17 OR flight_departure_airport = 18)
+-- 25. Where flight arrival airport is 20 or departure aiport is 18
+SELECT crew FROM CrewOnFlight
+WHERE flight IN (SELECT flight_id FROM Flight WHERE flight_arrival_airport = 20 OR flight_departure_airport = 18)
+-- 26. Where city id is from 5 to 20
+SELECT airport_id, airport_name FROM Airport
+WHERE city IN (SELECT city_id FROM City WHERE city_id >= 5 AND city_id <= 20)
+-- 27. Where city name is Karachi or Lahore
+SELECT airport_id, airport_name FROM Airport
+WHERE city IN (SELECT city_id FROM City WHERE city_name = 'Karachi' OR city_name = 'Lahore')
+-- 28. Where city name is Islamabad or London
+SELECT airport_id, airport_name FROM Airport
+WHERE city IN (SELECT city_id FROM City WHERE city_name = 'Islamabad' OR city_name = 'London')
+-- 29. Where city name is Delhi or Lahore
+SELECT airport_id, airport_name FROM Airport
+WHERE city IN (SELECT city_id FROM City WHERE city_name = 'Delhi' OR city_name = 'Lahore')
+-- 30. Where flight departure airport not in range 10 to 20
+SELECT baggage_id, baggage_detail FROM Baggage
+WHERE flight IN (SELECT flight_id FROM Flight WHERE flight_departure_airport NOT BETWEEN 10 AND 20)
 
 
 -----------------------------Aggregate Functions--------------------------------------
@@ -1359,7 +1447,7 @@ FROM Baggage b
 INNER JOIN Passenger p
 ON p.passenger_id = b.passenger
 WHERE b.baggage_detail LIKE '%Guitar%' OR b.baggage_detail LIKE '%Dell%'
--- 7. Departure date time of each baggage except those baggages where baggage id is 4 or 5
+-- 7. Departure date time of each baggage except those baggage where baggage id is 4 or 5
 SELECT b.baggage_id, f.flight_departure_datetime
 FROM Baggage b
 INNER JOIN Flight f
@@ -2077,7 +2165,7 @@ END
 EXEC specific_flight_id 5
 -- 7. Stored Procedure to view baggage by giving flight id
 GO
-CREATE PROCEDURE baggages_of_flight @f_id int
+CREATE PROCEDURE baggage_of_flight @f_id int
 AS BEGIN
 	SELECT * FROM Baggage
 	WHERE flight = @f_id
